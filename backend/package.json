@@ -1,0 +1,26 @@
+{
+  "name": "mflow",
+  "version": "1.0.0",
+  "description": "Merchandise Flow app",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "merchandise",
+    "flow",
+    "evidention"
+  ],
+  "author": "Bosko Stupar",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jwt-simple": "^0.5.1",
+    "mongodb": "^2.2.33",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "supertest": "^3.0.0"
+  }
+}

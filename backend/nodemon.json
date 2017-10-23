@@ -1,0 +1,9 @@
+{
+    "ignore": [
+        ".git",
+        "node_modules",
+        ".gitignore",
+        ".jshintrc",
+        "watch.sh"
+    ]
+}
