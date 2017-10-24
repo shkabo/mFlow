@@ -21,7 +21,7 @@ app.all('/*', (req, res, next) => {
     }
 });
 
-app.all('/api/v1/*', [require('./middlewares/validateRequest')]);
+//app.all('/api/v1/*', [require('./middlewares/validateRequest')]);
 app.use('/', require('./routes'));
 
 app.use((req, res) => {
@@ -32,18 +32,6 @@ app.use((req, res) => {
 app.use((error, req, res, next) => {
     res.status(500);
     res.send('500: Internal server error');
-});
-
-MongoClient.connect('mongodb://localhost:27017/mflow', (err, db) => {
-    if (err) throw err;
-    db.createCollection('users', (err, res) => {
-        if (err) throw err;
-        db.close();
-    });
-    db.createCollection('projects', (err, res) => {
-        if (err) throw err;
-        db.close();
-    });
 });
 
 const server = app.listen(port, function() {

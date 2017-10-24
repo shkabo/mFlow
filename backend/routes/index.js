@@ -10,6 +10,9 @@ const user = require('./users.js');
  */
 
 router.post('/login', auth.login);
+router.get('/token', (req, res) => {
+    res.json(getToken('bosko'));
+});
 
 // only authenticated users can access
 router.get('/api/v1/products', products.getAll);

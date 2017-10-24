@@ -1,8 +1,26 @@
+const mongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:27017/mflow";
+
 const users = {
 
     getAll: function(req, res) {
+        mongoClient.connect(url, (err, db) => {
+            if (err) throw err;
+            db.collection("users").find().toArray((err, result) => {
+                if (err) {
+                    res.status(400);
+                    res.json({
+                        "status": 400,
+                        "message": "There was an error processing your request"
+                    });
+                    throw err;
+                } else {
+                    res.status(200);
+                    res.json(result);
+                }
+            });
+        });
 
-        res.json(allusers);
     },
 
     getOne: function(req, res) {
