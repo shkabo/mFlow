@@ -9,26 +9,15 @@ const users = {
     /**
      * Get all users
      * @route /api/v1/admin/users
-     * @param  {} req [description]
-     * @param  {} res [description]
-     * @return {json}    json list of users
      */
     getAll: function(req, res) {
         mongoClient.connect(url, (err, db) => {
             if (err) throw err;
-            db.collection(collection).find({}, {password: 0}).toArray((err, result) => {
-                if (err) {
-                    res.status(400);
-                    res.json({
-                        "status": 400,
-                        "message": "There was an error processing your request"
-                    });
-                    throw err;
-                } else {
-                    db.close();
-                    res.status(200);
-                    res.json(result);
-                }
+            db.collection(collection).find({}, { password: 0 }).toArray((err, result) => {
+                if (err) throw err;
+
+                db.close();
+                res.status(200).json(result);
             });
         });
 
@@ -37,60 +26,52 @@ const users = {
     /**
      * Get single user
      * @route /api/v1/admin/user/:id
-     * @param  {id} req user ID
-     * @param  {} res
-     * @return {json}     user data
      */
     getOne: function(req, res) {
         let id = req.params.id;
         mongoClient.connect(url, (err, db) => {
-          if (err) throw err;
-          db.collection(collection).find(ObjectId(id), {password: 0}).toArray((err, result) => {
-            if (err) {
-              es.status(400);
-              res.json({
-                  "status": 400,
-                  "message": "There was an error processing your request"
-              });
-              throw err;
-            } else {
-              db.close();
-              res.status(200);
-              res.json(result);
-            }
-          });
+            if (err) throw err;
+            db.collection(collection).find(ObjectId(id), { password: 0 }).toArray((err, result) => {
+                if (err) throw err;
+                if (result && result.lengt > 0) {
+                    db.close();
+                    res.status(200).json(result);
+                } else {
+                    db.close();
+                    res.status(400).json({
+                        "status": 400,
+                        "message": "User not found"
+                    });
+                }
+            });
         });
     },
 
     /**
      * Create new user
-     * @param  {} req
-     * @param  {} res
-     * @return {json}     success/fail
+     * @route /api/v1/admin/user/
      */
     create: function(req, res) {
         let newuser = req.body;
-
+        //@TODO: Sanitize a bit better this input
         mongoClient.connect(url, (err, db) => {
             if (err) throw err;
             db.collection(collection).insertOne({
-                email : newuser.email,
-                full_name: newuser.full_name,
-                password: newuser.password
+                email: newuser.email.trim(),
+                full_name: newuser.full_name.trim(),
+                password: newuser.password.trim()
             }, (err, ins) => {
                 if (err) throw err;
                 if (ins.insertedCount > 0) {
-                    res.status(200);
-                    res.json({
+                    db.close();
+                    res.status(200).json({
                         "status": 200,
                         "message": "Successfuly added new user",
-                        "user": ins.insertedId
+                        "userid": ins.insertedId
                     });
-                    db.close();
-                    return;
                 } else {
-                    res.status(400);
-                    res.json({
+                    db.close();
+                    res.status(400).json({
                         "status": 400,
                         "message": "There was an error creating user"
                     });
@@ -99,22 +80,71 @@ const users = {
         });
     },
 
+    /**
+     * Change password
+     * @route /api/v1/admin/user/:id
+     */
     update: function(req, res) {
         let updateuser = req.body;
         let id = req.params.id;
+        //@TODO: Some more verification and validation for password change !
+        if (req.body.password.trim() && req.body.password.trim().length > 0) {
+
+            mongoClient.connect(url, (err, db) => {
+                db.collection(collection).findAndModify({ _id: ObjectId(id) }, [], { $set: { password: req.body.password } }, { new: false },
+                    (err, doc) => {
+                        if (err) throw err;
+                        if (doc.value != null) {
+                            db.close();
+                            res.status(200).json({
+                                "status": 200,
+                                "message": "Success",
+                                "data": doc.value
+                            });
+                        } else {
+                            res.status(400).json({
+                                "status": 400,
+                                "message": "Specified user couldn't be found"
+                            });
+                        }
+
+                    });
+            });
+        } else {
+            db.close();
+            res.status(400).json({
+                "status": 400,
+                "message": "New password was not provided"
+            });
+        }
+    },
+
+    /**
+     * Delete user
+     * @route /api/v1/admin/user/:id
+     */
+    delete: function(req, res) {
+        let id = req.params.id;
+        //@TODO: Add validation who can delete user
         mongoClient.connect(url, (err, db) => {
-            db.collection(collection).findAndModify({
-                
+            db.collection(collection).deleteOne({ _id: ObjectId(id) }, (err, doc) => {
+                if (err) throw err;
+                if (doc.deletedCount > 0) {
+                    db.close();
+                    res.status(200).json({
+                        "status": 200,
+                        "message": "User successfully deleted"
+                    });
+                } else {
+                    db.close();
+                    res.status(400).json({
+                        "status": 400,
+                        "message": "We couldn't find that user"
+                    });
+                }
             });
         });
 
-        res.json(updateuser);
-    },
-
-    delete: function(req, res) {
-        let id = req.params.id;
-
-        res.json(true);
     }
 };
 
