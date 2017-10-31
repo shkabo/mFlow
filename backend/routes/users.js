@@ -1,6 +1,7 @@
 const mongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectId;
-const url = "mongodb://localhost:27017/mflow";
+const confing = require('config');
+const url = confing.DBHost;
 const collection = "users";
 
 
