@@ -16,16 +16,23 @@ router.get('/token', (req, res) => {
 
 // only authenticated users can access
 router.get('/api/v1/products', products.getAll);
+router.post('/api/v1/products', products.findLike);
 router.get('/api/v1/product/:id', products.getOne);
 router.post('/api/v1/product/', products.create);
 router.put('/api/v1/product/:id', products.update);
 router.delete('/api/v1/product/:id', products.delete);
 
 // only authenticated and autorized users can access
-router.get('/api/v1/admin/users', user.getAll);
-router.get('/api/v1/admin/user/:id', user.getOne);
-router.post('/api/v1/admin/user/', user.create);
-router.put('/api/v1/admin/user/:id', user.update);
-router.delete('/api/v1/admin/user/:id', user.delete);
+router.get('/api/v1/users', user.getAll);
+router.get('/api/v1/user/:id', user.getOne);
+router.post('/api/v1/user/', user.create);
+router.put('/api/v1/user/:id', user.update);
+router.delete('/api/v1/user/:id', user.delete);
+
+router.stack.forEach(function(r) {
+    if (r.route && r.route.path) {
+        console.log(r.route.path)
+    }
+});
 
 module.exports = router;

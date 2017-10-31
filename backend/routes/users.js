@@ -8,9 +8,9 @@ const users = {
 
     /**
      * Get all users
-     * @route /api/v1/admin/users
+     * @route /api/v1/users
      */
-    getAll: function(req, res) {
+    getAll: (req, res) => {
         mongoClient.connect(url, (err, db) => {
             if (err) throw err;
             db.collection(collection).find({}, { password: 0 }).toArray((err, result) => {
@@ -25,9 +25,9 @@ const users = {
 
     /**
      * Get single user
-     * @route /api/v1/admin/user/:id
+     * @route /api/v1/user/:id
      */
-    getOne: function(req, res) {
+    getOne: (req, res) => {
         let id = req.params.id;
         mongoClient.connect(url, (err, db) => {
             if (err) throw err;
@@ -49,9 +49,9 @@ const users = {
 
     /**
      * Create new user
-     * @route /api/v1/admin/user/
+     * @route /api/v1/user/
      */
-    create: function(req, res) {
+    create: (req, res) => {
         let newuser = req.body;
         //@TODO: Sanitize a bit better this input
         mongoClient.connect(url, (err, db) => {
@@ -82,9 +82,9 @@ const users = {
 
     /**
      * Change password
-     * @route /api/v1/admin/user/:id
+     * @route /api/v1/user/:id
      */
-    update: function(req, res) {
+    update: (req, res) => {
         let updateuser = req.body;
         let id = req.params.id;
         //@TODO: Some more verification and validation for password change !
@@ -121,9 +121,9 @@ const users = {
 
     /**
      * Delete user
-     * @route /api/v1/admin/user/:id
+     * @route /api/v1/user/:id
      */
-    delete: function(req, res) {
+    delete: (req, res) => {
         let id = req.params.id;
         //@TODO: Add validation who can delete user
         mongoClient.connect(url, (err, db) => {

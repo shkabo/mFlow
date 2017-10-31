@@ -2,8 +2,24 @@ const express = require('express');
 const app = express();
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
 const port = process.env.port || 3000;
+const mongoose = require('mongoose');
+const config = require('config');
+const morgan = require('morgan');
+
+let options = {
+    useMongoClient: true,
+    server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+    replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+}
+
+mongoose.connect(config.DBHost, options);
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error'));
+
+if (config.util.getEnv('NODE_ENV') != 'test') {
+    app.use(morgan('combined'));
+}
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -34,6 +50,12 @@ app.use((error, req, res, next) => {
     res.send('500: Internal server error');
 });
 
+
+
+
+
+
 const server = app.listen(port, function() {
     console.log("app is up");
 });
+module.exports = server;
