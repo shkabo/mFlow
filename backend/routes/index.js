@@ -29,10 +29,10 @@ router.post('/api/v1/user/', user.create);
 router.put('/api/v1/user/:id', user.update);
 router.delete('/api/v1/user/:id', user.delete);
 
-router.stack.forEach(function(r) {
-    if (r.route && r.route.path) {
-        console.log(r.route.path)
-    }
-});
+// router.stack.forEach(function(r) {
+//     if (r.route && r.route.path) {
+//         console.log(r.route.path)
+//     }
+// });
 
 module.exports = router;
