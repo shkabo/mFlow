@@ -15,11 +15,11 @@ mongoose.connect(config.DBHost, options);
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error'));
 
-if (config.util.getEnv('NODE_ENV') != 'test') {
-    app.use(logger('combined'));
-} else {
-    app.use(logger('dev'));
-}
+// if (config.util.getEnv('NODE_ENV') != 'test') {
+//     app.use(logger('combined'));
+// } else {
+//     app.use(logger('dev'));
+// }
 
 
 app.use(bodyParser.json());

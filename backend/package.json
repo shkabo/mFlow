@@ -1,32 +1,32 @@
 {
-  "name": "mflow",
-  "version": "1.0.0",
-  "description": "Merchandise Flow app",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "test": "mocha"
-  },
-  "keywords": [
-    "merchandise",
-    "flow",
-    "evidention"
-  ],
-  "author": "Bosko Stupar",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "^1.18.2",
-    "config": "^1.27.0",
-    "express": "^4.16.2",
-    "jwt-simple": "^0.5.1",
-    "mongodb": "^2.2.33",
-    "mongoose": "^4.12.5",
-    "morgan": "^1.9.0"
-  },
-  "devDependencies": {
-    "chai": "^4.1.2",
-    "chai-http": "^3.0.0",
-    "mocha": "^4.0.1",
-    "supertest": "^3.0.0"
-  }
+    "name": "mflow",
+    "version": "1.0.0",
+    "description": "Merchandise Flow app",
+    "main": "app.js",
+    "scripts": {
+        "start": "node app.js",
+        "test": "mocha --exit"
+    },
+    "keywords": [
+        "merchandise",
+        "flow",
+        "evidention"
+    ],
+    "author": "Bosko Stupar",
+    "license": "MIT",
+    "dependencies": {
+        "body-parser": "^1.18.2",
+        "config": "^1.27.0",
+        "express": "^4.16.2",
+        "jwt-simple": "^0.5.1",
+        "mongodb": "^2.2.33",
+        "mongoose": "^4.12.5",
+        "morgan": "^1.9.0"
+    },
+    "devDependencies": {
+        "chai": "^4.1.2",
+        "chai-http": "^3.0.0",
+        "mocha": "^4.0.1",
+        "supertest": "^3.0.0"
+    }
 }
