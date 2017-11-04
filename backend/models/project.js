@@ -5,8 +5,10 @@ let ProjectSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     status: { type: Number, required: true, default: 1 },
-    user_id: { type: ObjectId, required: true },
+    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
     created: { type: Date, required: true }
+}, {
+  versionKey: false
 });
 
 ProjectSchema.pre('save', next => {
