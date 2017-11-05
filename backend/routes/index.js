@@ -14,7 +14,14 @@ router.get('/token', (req, res) => {
     res.json(getToken('bosko'));
 });
 
-// only authenticated users can access
+// User routes
+router.get('/api/v1/users', user.getAll);
+router.get('/api/v1/user/:id', user.getOne);
+router.post('/api/v1/user/', user.create);
+router.put('/api/v1/user/:id', user.update);
+router.delete('/api/v1/user/:id', user.delete);
+
+// Product routes
 router.get('/api/v1/products', products.getAll);
 router.post('/api/v1/products', products.findLike);
 router.get('/api/v1/product/:id', products.getOne);
@@ -22,12 +29,12 @@ router.post('/api/v1/product/', products.create);
 router.put('/api/v1/product/:id', products.update);
 router.delete('/api/v1/product/:id', products.delete);
 
-// only authenticated and autorized users can access
-router.get('/api/v1/users', user.getAll);
-router.get('/api/v1/user/:id', user.getOne);
-router.post('/api/v1/user/', user.create);
-router.put('/api/v1/user/:id', user.update);
-router.delete('/api/v1/user/:id', user.delete);
+// Project routes
+router.get('/api/v1/projects', projects.getAll);
+router.post('/api/v1/project', projects.create);
+router.get('/api/v1/project/:id', projects.getOne);
+router.put('/api/v1/project/:id', projects.update);
+router.delete('/api/v1/project/:id', projects.delete);
 
 // router.stack.forEach(function(r) {
 //     if (r.route && r.route.path) {
