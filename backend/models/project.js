@@ -1,17 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const user = require('./user');
 
-let ProjectSchema = new Schema({
+const ProjectSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
-    status: { type: Number, required: true, default: 1 },
-    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
-    created: { type: Date, required: true }
+    status: { type: Number, required: false, default: 1 },
+    user: { type: Schema.Types.ObjectId, ref: 'user' },
+    created: { type: Date, default: Date.now }
 }, {
   versionKey: false
 });
 
-ProjectSchema.pre('save', next => {
+
+ProjectSchema.pre('save', (next) => {
     now = new Date();
     if (!this.created) {
         this.created = now;

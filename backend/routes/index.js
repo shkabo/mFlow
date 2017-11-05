@@ -4,6 +4,7 @@ const router = express.Router();
 const auth = require('./auth.js');
 const products = require('./products.js');
 const user = require('./users.js');
+const projects = require('./projects');
 
 /**
  * Free to access routes
@@ -28,10 +29,11 @@ router.get('/api/v1/product/:id', products.getOne);
 router.post('/api/v1/product/', products.create);
 router.put('/api/v1/product/:id', products.update);
 router.delete('/api/v1/product/:id', products.delete);
+router.get('/api/v1/product/like', products.findLike);
 
 // Project routes
 router.get('/api/v1/projects', projects.getAll);
-router.post('/api/v1/project', projects.create);
+router.post('/api/v1/project/', projects.create);
 router.get('/api/v1/project/:id', projects.getOne);
 router.put('/api/v1/project/:id', projects.update);
 router.delete('/api/v1/project/:id', projects.delete);
