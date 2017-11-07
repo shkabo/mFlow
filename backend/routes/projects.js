@@ -39,9 +39,9 @@ const projects = {
                 }
                 console.log(errMessage);
             }
-            newProject.populate(project, { path: "user", select: "_id full_name" }, (err, project) => {
+            project.populate({ path: "user", select: "_id full_name" }, (err, pop) => {
                 if (err) throw err;
-                res.status(200).json(project);
+                res.status(200).json(pop);
             });
         });
     },
@@ -60,11 +60,21 @@ const projects = {
         });
     },
     delete: (req, res) => {
-        Project.delete({ _id: req.params.id }, (err, result) => {
-            res.send(200).json({
-                "message": "Project successfully deleted",
-                result
-            });
+        Project.remove({ _id: req.params.id }, (err, result) => {
+            if (err) throw err;
+            if (result.result.n == 0) {
+                res.status(400).json({
+                    "status": 400,
+                    "message": "Requested project does not exist so we couldn't remove it"
+                });
+            }
+            if (result.result.n > 0) {
+                console.log(result.result.n);
+                res.status(200).json({
+                    "status": 200,
+                    "message": "Project successfully deleted",
+                });
+            }
         });
     }
 };
