@@ -5,7 +5,7 @@ const auth = require('./auth.js');
 const products = require('./products.js');
 const user = require('./users.js');
 const projects = require('./projects');
-
+const inouts = require('./inouts')
 /**
  * Free to access routes
  */
@@ -37,6 +37,12 @@ router.post('/api/v1/project/', projects.create);
 router.get('/api/v1/project/:id', projects.getOne);
 router.put('/api/v1/project/:id', projects.update);
 router.delete('/api/v1/project/:id', projects.delete);
+
+// In/Out products for projects
+router.get('/api/v1/inouts/:id', inouts.getAll);
+router.post('/api/v1/inout/', inouts.create);
+router.put('/api/v1/inout/:id', inouts.update);
+router.delete('/api/v1/inout/:id', inouts.delete);
 
 // router.stack.forEach(function(r) {
 //     if (r.route && r.route.path) {
