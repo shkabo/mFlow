@@ -5,7 +5,7 @@ const auth = require('./auth.js');
 const products = require('./products.js');
 const user = require('./users.js');
 const projects = require('./projects');
-const inouts = require('./inouts')
+const inouts = require('./inouts');
 /**
  * Free to access routes
  */
