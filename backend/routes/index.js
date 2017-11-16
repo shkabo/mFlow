@@ -40,7 +40,7 @@ router.delete('/api/v1/project/:id', projects.delete);
 
 // In/Out products for projects
 router.get('/api/v1/inouts/:id', inouts.getAll);
-router.post('/api/v1/inout/', inouts.create);
+router.post('/api/v1/inout/:id', inouts.create);
 router.put('/api/v1/inout/:id', inouts.update);
 router.delete('/api/v1/inout/:id', inouts.delete);
 
