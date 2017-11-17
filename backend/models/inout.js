@@ -5,12 +5,8 @@ const product = require('./product');
 const project = require('./project');
 
 let inout = new Schema({
-  products: [
-    {
-        product: { type: Schema.Types.ObjectId, ref: "product" },
-        quantity: { type: Number }
-    }
-  ],
+  product: { type: Schema.Types.ObjectId, ref: "product" },
+  quantity: { type: Number },
   user_add: { type: Schema.Types.ObjectId, ref: "user" },
   user_take: { type: Schema.Types.ObjectId, ref: "user" },
   project_id: { type: Schema.Types.ObjectId, ref: "project" },

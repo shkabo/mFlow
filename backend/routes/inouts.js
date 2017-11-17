@@ -9,7 +9,7 @@ const inouts = {
       .populate([
         { path: 'user_add', select: 'full_name'},
         { path: 'user_take', select: 'full_name'},
-        { path: "products.product", select:"name price"}
+        { path: "product", select:"name price"}
       ])
       .exec( (err, data) => {
         if (err) throw err;
@@ -28,7 +28,7 @@ const inouts = {
 
     io.save((err, ioData) => {
       if (err) throw err;
-      ioData.populate([{ path: 'user_add', select: 'full_name'}, { path: 'products.product', select: 'name price'}, { path: 'user_take', select: 'full_name'}], (err, data) => {
+      ioData.populate([{ path: 'user_add', select: 'full_name'}, { path: 'product', select: 'name price'}, { path: 'user_take', select: 'full_name'}], (err, data) => {
         if (err) throw err;
         res.status(200).json(data);
       });
