@@ -1,4 +1,6 @@
 const jwt = require('jwt-simple');
+const mongoose = require('mongoose');
+const User = require('../models/user');
 
 const auth = {
 
@@ -15,30 +17,26 @@ const auth = {
             return;
         }
 
-        let dbUserObj = auth.validate(username, password);
+        auth.validate(username, password, res);
+    },
 
-        if (!dbUserObj) {
+    validate: (username, password, res) => {
+        // do the validation in here !
+        User.findOne({"email": username, "password": password}, '-password', (err, user) => {
+          if (err) throw err;
+          if ( user && user.length > 0) {
+            res.status(200).json(getToken(user));
+          } else {
             res.status(401);
             res.json({
                 "status": 401,
                 "message": "Invalid credentials"
             });
             return;
-        }
-
-        if (dbUserObj) {
-            // generate token and dispatch it to the client
-            res.json(genToken(dbUserObj));
-        }
-    },
-
-    validate: (username, password) => {
-        // do the validation in here !
-        let dbUserObj = {};
-        return dbUserObj;
-
+          }
+        });
     }
-}
+};
 
 getToken = (user) => {
     let expires = expiresIn(7);
@@ -51,11 +49,11 @@ getToken = (user) => {
         expires: expires,
         user: user
     };
-}
+};
 
 expiresIn = (numDays) => {
     let dateObj = new Date();
     return dateObj.setDate(dateObj.getDate() + numDays);
-}
+};
 
 module.exports = auth;
