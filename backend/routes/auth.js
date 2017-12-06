@@ -1,14 +1,14 @@
 const jwt = require('jwt-simple');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 const User = require('../models/user');
 
 const auth = {
 
     login: (req, res) => {
-        let username = req.body.username || '';
+        let email = req.body.email || '';
         let password = req.body.password || '';
 
-        if (username == '' || password == '') {
+        if (email == '' || password == '') {
             res.status(401);
             res.json({
                 "status": 401,
@@ -17,20 +17,20 @@ const auth = {
             return;
         }
 
-        auth.validate(username, password, res);
+        auth.validate(email, password, res);
     },
 
-    validate: (username, password, res) => {
+    validate: (email, password, res) => {
         // do the validation in here !
-        User.findOne({"email": username, "password": password}, '-password', (err, user) => {
+        User.findOne({"email": email, "password": password}, '-password', (err, user) => {
           if (err) throw err;
-          if ( user && user.length > 0) {
+          if (user && Object.keys(user).length > 0) {
             res.status(200).json(getToken(user));
           } else {
             res.status(401);
             res.json({
                 "status": 401,
-                "message": "Invalid credentials"
+                "message": "Invalid credentialss"
             });
             return;
           }
