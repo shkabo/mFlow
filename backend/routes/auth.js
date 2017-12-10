@@ -5,18 +5,40 @@ const User = require('../models/user');
 const auth = {
 
     /**
-     * @api {post} /login Login User
+     * @api {post} /login Login
      * @apiName auth.Login
      * @apiGroup Auth
      *
      * @apiParam {String} email Users email
      * @apiParam {String} password  Users password
      *
+     * @apiParamExample {json} Request-Example:
+     *
+     *     {
+            	"email": "example1@test.com",
+            	"password": "test123"
+            }
+     *
+     *
      * @apiSuccessExample Success-Response:
-     *    HTTP
-     * @param  {[type]} req [description]
-     * @param  {[type]} res [description]
-     * @return {[type]}     [description]
+     *    HTTP/1.1 200
+     *    {
+     *        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MTM1Mjg4NDA4NzN9.gTSVjrSucxJRuc0ofDvMS91x2r663Wts-fkkc-C7hB8",
+     *        "expires": 1513528840873,
+     *        "user": {
+     *            "_id": "5a2d63858c6781413991d526",
+     *            "email": "example1@test.com",
+     *            "full_name": "John Doe"
+     *        }
+     *    }
+     *
+     * @apiErrorExample Error-Response:
+     *    HTTP/1.1 401
+     *    {
+     *        "status": 401,
+     *        "message": "Invalid credentialss"
+     *    }
+     *
      */
     login: (req, res) => {
         let email = req.body.email || '';

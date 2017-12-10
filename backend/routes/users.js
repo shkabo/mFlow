@@ -4,13 +4,32 @@ const confing = require('config');
 const url = confing.DBHost;
 const collection = "users";
 
+//@TODO: Swap to mongoose instead of mongodb client ...
 
 const users = {
 
-    /**
-     * Get all users
-     * @route /api/v1/users
-     */
+  /**
+   * @api {get} /api/v1/users getAll
+   * @apiName users.getAll
+   * @apiGroup User
+   *
+   * @apiSuccessExample Success-Response:
+   *    HTTP/1.1 200
+   *    [
+            {
+                "_id": "5a2d63778c6781413991d525",
+                "email": "example1@test.com",
+                "full_name": "Example One"
+            },
+            {
+                "_id": "5a2d63858c6781413991d526",
+                "email": "example2@test.com",
+                "full_name": "Example Two"
+            }
+        ]
+
+   *
+   */
     getAll: (req, res) => {
         mongoClient.connect(url, (err, db) => {
             if (err) throw err;
@@ -25,8 +44,29 @@ const users = {
     },
 
     /**
-     * Get single user
-     * @route /api/v1/user/:id
+     * @api {get} /api/v1/user/:id getOne
+     * @apiName users.getOne
+     * @apiGroup User
+     *
+     * @apiParam {String} id Users ID hash
+     *
+     * @apiSuccessExample Success-Response:
+     *    HTTP/1.1 200
+     *    [
+            {
+                "_id": "5a2d63858c6781413991d526",
+                "email": "example1@test.com",
+                "full_name": "Example One"
+            }
+        ]
+     *
+     * @apiErrorExample Error-Response:
+     *    HTTP/1.1 400
+     *    {
+     *        "status": 400,
+     *        "message": "User not found"
+     *    }
+     *
      */
     getOne: (req, res) => {
         let id = req.params.id;
@@ -34,7 +74,7 @@ const users = {
             if (err) throw err;
             db.collection(collection).find(ObjectId(id), { password: 0 }).toArray((err, result) => {
                 if (err) throw err;
-                if (result && result.lengt > 0) {
+                if (result && result.length > 0) {
                     db.close();
                     res.status(200).json(result);
                 } else {
@@ -49,12 +89,43 @@ const users = {
     },
 
     /**
-     * Create new user
-     * @route /api/v1/user/
+     * @api {post} /api/v1/user/ create
+     * @apiName users.create
+     * @apiGroup User
+     *
+     * @apiParam {String} email Users email
+     * @apiParam {String} full_name Users Full name
+     * @apiParam {String} password Users password
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *     {
+              "full_name": "Bosko Stupar",
+              "email": "example@test.com",
+              "password": "test123"
+            }
+     *
+     *
+     * @apiSuccessExample Success-Response:
+     *    HTTP/1.1 200
+     *    {
+                "status": 200,
+                "message": "Successfuly added new user",
+                "userid": "5a2d63858c6781413991d526"
+            }
+     *
+     * @apiErrorExample Error-Response:
+     *    HTTP/1.1 400
+     *    {
+     *        "status": 400,
+     *        "message": "There was an error creating user"
+     *    }
+     *
      */
     create: (req, res) => {
         let newuser = req.body;
         //@TODO: Sanitize a bit better this input
+        //@TODO: fix if not all fields are specified
         mongoClient.connect(url, (err, db) => {
             if (err) throw err;
             db.collection(collection).insertOne({
@@ -82,8 +153,39 @@ const users = {
     },
 
     /**
-     * Change password
-     * @route /api/v1/user/:id
+     * @api {put} /api/v1/user/:id update
+     * @apiName users.update
+     * @apiGroup User
+     *
+     * @apiParam {String} id Users id hash
+     * @apiParam {String} password Users password to be changed
+     *
+     * @apiParamExample {json} Request-Example:
+     *
+     *     {
+            	"password": "test1233"
+            }
+     *
+     * @apiSuccessExample Success-Response:
+     *    HTTP/1.1 200
+     *    {
+            "status": 200,
+            "message": "Success",
+            "data": {
+                "_id": "5a2d63858c6781413991d526",
+                "email": "example@test.com",
+                "full_name": "Bosko Stupar",
+                "password": "test1233"
+            }
+        }
+     *
+     * @apiErrorExample Error-Response:
+     *    HTTP/1.1 400
+     *    {
+     *        "status": 400,
+     *        "message": "There was an error creating user"
+     *    }
+     *
      */
     update: (req, res) => {
         let updateuser = req.body;
@@ -121,8 +223,26 @@ const users = {
     },
 
     /**
-     * Delete user
-     * @route /api/v1/user/:id
+     * @api {delete} /api/v1/user/:id delete
+     * @apiName users.delete
+     * @apiGroup User
+     *
+     * @apiParam {String} id Users id hash
+     *
+     * @apiSuccessExample Success-Response:
+     *    HTTP/1.1 200
+     *    {
+            "status": 200,
+            "message": "User successfully deleted"
+        }
+     *
+     * @apiErrorExample Error-Response:
+     *    HTTP/1.1 400
+     *    {
+     *        "status": 400,
+     *        "message": "We couldn't find that user"
+     *    }
+     *
      */
     delete: (req, res) => {
         let id = req.params.id;
