@@ -9,12 +9,4 @@ let UserSchema = new Schema({
     versionKey: false
 });
 
-UserSchema.pre('save', next => {
-    now = new Date();
-    if (!this.createdAt) {
-        this.createAt = now;
-    }
-    next();
-});
-
 module.exports = mongoose.model('user', UserSchema);
