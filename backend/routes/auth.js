@@ -2,6 +2,20 @@ const jwt = require('jwt-simple');
 
 const auth = {
 
+    /**
+     * @api {post} /login Login User
+     * @apiName auth.Login
+     * @apiGroup Auth
+     *
+     * @apiParam {String} email Users email
+     * @apiParam {String} password  Users password
+     *
+     * @apiSuccessExample Success-Response:
+     *    HTTP
+     * @param  {[type]} req [description]
+     * @param  {[type]} res [description]
+     * @return {[type]}     [description]
+     */
     login: (req, res) => {
         let username = req.body.username || '';
         let password = req.body.password || '';
